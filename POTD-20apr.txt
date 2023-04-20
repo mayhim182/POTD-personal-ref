@@ -1,0 +1,63 @@
+class Solution{
+	public:
+	//can you covert it to a graph and then do the same
+	//bidirectional-graph
+	
+	 
+    unordered_map<int,vector<int>> adj;
+    
+    map<int,int> vis;
+    
+    void fillList(Node* root)
+    {
+        if(!root) return;
+        
+        vis[root->data]=0;
+        
+        if(root->left)
+        {
+            adj[root->data].push_back(root->left->data);
+            adj[root->left->data].push_back(root->data);
+            fillList(root->left);
+        }
+        if(root->right)
+        {
+            adj[root->data].push_back(root->right->data);
+            adj[root->right->data].push_back(root->data);
+            fillList(root->right);
+        }
+    }
+    
+    void dfs(int node, int k, int &sum)
+    {
+        if(k==0 ) return;
+        
+        vis[node]=1;
+        
+        sum+=node;
+        
+        for(auto it:adj[node])
+        {
+            if(!vis[it])
+            dfs(it, k-1, sum);
+            
+        }
+        
+        
+    }
+
+    public:
+    int ladoos(Node* root, int home, int k)
+    {
+        // Your code goes here
+        fillList(root);
+        int sum=0;
+        
+        dfs(home, k+1, sum);
+        
+        return sum;
+    }
+
+
+	
+}

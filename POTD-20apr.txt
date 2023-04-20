@@ -1,3 +1,88 @@
+
+method 1
+
+
+    public:
+    
+    map<int,int> mp;
+    
+    void fillTheList(vector<int> adj[],Node* root){
+        if(!root) return ;
+        
+        adj[root->data].push_back(0);
+        
+        if(root->left){
+            adj[root->data].push_back(root->left->data);
+            adj[root->left->data].push_back(root->data);
+        }
+        if(root->right){
+            adj[root->data].push_back(root->right->data);
+            adj[root->right->data].push_back(root->data);
+        }
+        
+        fillTheList(adj,root->left);
+        fillTheList(adj,root->right);
+    }
+    
+    int findSize(Node* root,int size){
+        if(!root) return 0;
+        size=max(size,root->data);
+        return max(size,max(findSize(root->left,size),findSize(root->right,size)));
+    }
+    
+    
+    //Do the dfs in the given radius;
+    void dfs(vector<int> adj[],int home,int k,int &ans){
+        
+        if(k<=0) return ;
+        
+        
+        // if(mp.find(home)!=mp.end()) return ;
+        if(mp.find(home)==mp.end()){
+            ans+=home;
+            mp[home]=1;
+            // cout<<home<<' ';
+        }
+        
+        for(auto it:adj[home]){
+            if(mp.find(it)==mp.end()){
+                ans+=it;
+                mp[it]=1;
+                // cout<<it<<' ';
+                dfs(adj,it,k-1,ans);
+            }
+        }
+        
+    }
+    
+    int ladoos(Node* root, int home, int k)
+    {
+        // Your code goes here
+        int n=findSize(root,0);
+        vector<int> adj[n+1];
+        int ans=0;
+        fillTheList(adj,root);
+        dfs(adj,home,k,ans);
+        return ans;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//Method 2 using map as an adjacency list
 class Solution{
 	public:
 	//can you covert it to a graph and then do the same

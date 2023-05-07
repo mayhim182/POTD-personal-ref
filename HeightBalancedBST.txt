@@ -1,0 +1,24 @@
+class Solution{
+    public:
+    
+    int heightCalc(Node* root){
+        if(!root) return 0;
+        
+        return 1+max(heightCalc(root->left),heightCalc(root->right));
+    }
+    //Function to check whether a binary tree is balanced or not.
+    bool isBalanced(Node *root)
+    {
+        //  Your Code here
+        if(!root) return 1;
+        
+        int left=heightCalc(root->left);
+        int right=heightCalc(root->right);
+        
+       
+        
+        if(abs(left-right)<=1 && isBalanced(root->left) && isBalanced(root->right)) return 1;
+        
+        return 0;
+    }
+};
